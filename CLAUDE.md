@@ -34,22 +34,25 @@ No test infrastructure exists yet for either component.
 - **`tree-sitter/`** — **Tree-sitter AST grammar** (`grammar.js`) + highlight queries (`queries/highlights.scm`). Shared foundation for Neovim and Zed. Independent of the VS Code extension.
 - **`neovim/`** and **`zed/`** — Stub configurations that will consume the tree-sitter grammar.
 - **`scripts/`** — Bash build scripts for packaging each component.
-- **`plan-8-editor-plugins.md`** — Full design specification covering syntax edge cases, keyword lists, and acceptance criteria.
+- **`lang-support-spec.md`** — Full design specification covering syntax edge cases, keyword lists, and acceptance criteria.
 
 The two grammars (TextMate and Tree-sitter) define the same language in parallel — TextMate for VS Code, Tree-sitter for Neovim/Zed. They share no code.
 
 ## Key Design Decisions
 
-### TextMate scope alignment with HTML
-The VS Code TextMate grammar (`grove.tmLanguage.json`) must use scopes that match the built-in HTML grammar so that themes color Grove tokens consistently with surrounding HTML. The mapping:
+### TextMate scope conventions
+The VS Code TextMate grammar (`grove.tmLanguage.json`) uses semantic scopes that distinguish Grove constructs from plain HTML. The mapping:
 
-| Grove token | Scope (must match HTML equivalent) |
+| Grove token | Scope |
 |---|---|
-| `{%` `%}` `{{` `}}` delimiters | `punctuation.definition.tag.begin/end` (like `<` `>`) |
-| Tag keywords (`if`, `for`, `block`, etc.) | `entity.name.tag` (like `div`, `span`) |
-| Variables/identifiers | `entity.other.attribute-name` (like HTML attributes) |
-| `=` assignment | `punctuation.separator.key-value` (like HTML `=`) |
-| Strings | `string.quoted.double/single` (already standard) |
-| Filters | `support.function.filter` |
-
-Do not use `keyword.control.*` or `variable.other.*` for these tokens — those scopes cause color mismatches with HTML in most themes.
+| `{%` `%}` delimiters | `punctuation.section.embedded.begin/end` |
+| Sigils (`#`, `:`, `/`) | `keyword.operator.sigil.open/branch/close` |
+| Keywords (`if`, `each`, `set`, etc.) | `keyword.control.<category>` (conditional, loop, assignment, import, slot, capture, web, verbatim) |
+| Variables/identifiers | `variable.other` |
+| `=` assignment | `keyword.operator.assignment` |
+| Strings | `string.quoted.double/single` (standard) |
+| Filters (after `\|`) | `support.function.filter` |
+| Component tags (`<Card>`) | `entity.name.tag.component` |
+| `<Component>` definition | `entity.name.tag.definition` |
+| `{expr}` in attributes | `punctuation.section.embedded.begin/end.attribute` |
+| Comments `{# #}` | `comment.block` |

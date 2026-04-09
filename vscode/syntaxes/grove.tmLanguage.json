@@ -4,9 +4,13 @@
   "scopeName": "text.html.grov",
   "patterns": [
     { "include": "#grov-comment" },
-    { "include": "#grov-raw-block" },
+    { "include": "#grov-verbatim-block" },
     { "include": "#grov-tag" },
-    { "include": "#grov-output" },
+    { "include": "#grov-component-definition-open" },
+    { "include": "#grov-component-definition-close" },
+    { "include": "#grov-component-invocation-open" },
+    { "include": "#grov-component-invocation-close" },
+    { "include": "#grov-attribute-expression" },
     { "include": "text.html.basic" }
   ],
   "repository": {
@@ -22,18 +26,20 @@
       }
     },
 
-    "grov-raw-block": {
-      "begin": "(\\{%-?)\\s*(raw)\\s*(-?%\\})",
-      "end": "(\\{%-?)\\s*(endraw)\\s*(-?%\\})",
+    "grov-verbatim-block": {
+      "begin": "(\\{%-?)\\s*(#)(verbatim)\\s*(-?%\\})",
+      "end": "(\\{%-?)\\s*(/)(verbatim)\\s*(-?%\\})",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.tag.begin.grov" },
-        "2": { "name": "entity.name.tag.grov" },
-        "3": { "name": "punctuation.definition.tag.end.grov" }
+        "1": { "name": "punctuation.section.embedded.begin.grov" },
+        "2": { "name": "keyword.operator.sigil.open.grov" },
+        "3": { "name": "keyword.control.verbatim.grov" },
+        "4": { "name": "punctuation.section.embedded.end.grov" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.tag.begin.grov" },
-        "2": { "name": "entity.name.tag.grov" },
-        "3": { "name": "punctuation.definition.tag.end.grov" }
+        "1": { "name": "punctuation.section.embedded.begin.grov" },
+        "2": { "name": "keyword.operator.sigil.close.grov" },
+        "3": { "name": "keyword.control.verbatim.grov" },
+        "4": { "name": "punctuation.section.embedded.end.grov" }
       },
       "contentName": "string.unquoted.raw.grov"
     },
@@ -42,68 +48,83 @@
       "begin": "(\\{%-?)",
       "end": "(-?%\\})",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.tag.begin.grov" }
+        "1": { "name": "punctuation.section.embedded.begin.grov" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.tag.end.grov" }
+        "1": { "name": "punctuation.section.embedded.end.grov" }
       },
       "patterns": [
+        { "include": "#grov-whitespace-strip" },
+        { "include": "#grov-tag-sigil" },
         { "include": "#grov-tag-keywords" },
         { "include": "#grov-expression" }
       ]
     },
 
-    "grov-output": {
-      "begin": "(\\{\\{-?)",
-      "end": "(-?\\}\\})",
-      "beginCaptures": {
-        "1": { "name": "punctuation.definition.tag.begin.grov" }
-      },
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.tag.end.grov" }
-      },
+    "grov-whitespace-strip": {
+      "match": "(?<=\\{%)-(?=\\s)|(?<=\\s)-(?=%\\})",
+      "name": "keyword.operator.whitespace.grov"
+    },
+
+    "grov-tag-sigil": {
       "patterns": [
-        { "include": "#grov-expression" }
+        {
+          "match": "(#)(?=[a-zA-Z])",
+          "captures": {
+            "1": { "name": "keyword.operator.sigil.open.grov" }
+          }
+        },
+        {
+          "match": "(:)(?=[a-zA-Z])",
+          "captures": {
+            "1": { "name": "keyword.operator.sigil.branch.grov" }
+          }
+        },
+        {
+          "match": "(/)(?=[a-zA-Z])",
+          "captures": {
+            "1": { "name": "keyword.operator.sigil.close.grov" }
+          }
+        }
       ]
     },
 
     "grov-tag-keywords": {
       "patterns": [
         {
-          "match": "\\b(if|elif|else|endif|unless|endunless)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(if|else)\\b(\\s+(if))?",
+          "captures": {
+            "1": { "name": "keyword.control.conditional.grov" },
+            "3": { "name": "keyword.control.conditional.grov" }
+          }
         },
         {
-          "match": "\\b(for|in|empty|endfor)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(each|as|in|empty)\\b",
+          "name": "keyword.control.loop.grov"
         },
         {
-          "match": "\\b(set|with|endwith|capture|endcapture)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(set|let)\\b",
+          "name": "keyword.control.assignment.grov"
         },
         {
-          "match": "\\b(macro|endmacro|call|endcall)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(import|from)\\b",
+          "name": "keyword.control.import.grov"
         },
         {
-          "match": "\\b(extends|block|endblock|include|render|import|as)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(slot|fill)\\b",
+          "name": "keyword.control.slot.grov"
         },
         {
-          "match": "\\b(component|endcomponent|props|slot|endslot|fill|endfill)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(capture)\\b",
+          "name": "keyword.control.capture.grov"
         },
         {
-          "match": "\\b(asset|endasset|meta|hoist|endhoist)\\b",
-          "name": "entity.name.tag.grov"
+          "match": "\\b(asset|meta|hoist)\\b",
+          "name": "keyword.control.web.grov"
         },
         {
-          "match": "\\b(raw|endraw)\\b",
-          "name": "entity.name.tag.grov"
-        },
-        {
-          "match": "\\b(isolated)\\b",
-          "name": "entity.other.attribute-name.grov"
+          "match": "\\b(verbatim)\\b",
+          "name": "keyword.control.verbatim.grov"
         }
       ]
     },
@@ -119,9 +140,11 @@
         { "include": "#grov-filter" },
         { "include": "#grov-builtin-function" },
         { "include": "#grov-comparison-operator" },
+        { "include": "#grov-ternary-operator" },
         { "include": "#grov-concatenation-operator" },
         { "include": "#grov-arithmetic-operator" },
         { "include": "#grov-assignment-operator" },
+        { "include": "#grov-bracket-access" },
         { "include": "#grov-accessor" },
         { "include": "#grov-variable" }
       ]
@@ -181,7 +204,7 @@
               "name": "keyword.operator.filter.grov"
             },
             {
-              "match": "\\b(upcase|downcase|capitalize|titlecase|trim|lstrip|rstrip|replace|replace_all|prepend|append|truncate|truncate_words|split|strip_html|strip_newlines|newline_to_br|nl2br|escape|h|url_encode|url_decode|base64_encode|base64_decode|slugify|markdown|safe|json|default|round|ceil|floor|abs|plus|minus|times|divided_by|modulo|join|first|last|size|length|reverse|sort|uniq|compact|flatten|map|where|reject|sum|min|max|slice|push|keys|values)\\b",
+              "match": "\\b(upper|lower|title|capitalize|trim|lstrip|rstrip|replace|truncate|center|ljust|rjust|split|wordcount|length|first|last|join|sort|reverse|unique|min|max|sum|map|batch|flatten|keys|values|abs|round|ceil|floor|int|float|default|string|bool|escape|striptags|nl2br|safe)\\b",
               "name": "support.function.filter.grov"
             },
             {
@@ -194,7 +217,7 @@
     },
 
     "grov-builtin-function": {
-      "match": "\\b(range|caller|super)\\s*(?=\\()",
+      "match": "\\b(range)\\s*(?=\\()",
       "captures": {
         "1": { "name": "support.function.builtin.grov" }
       }
@@ -203,6 +226,11 @@
     "grov-comparison-operator": {
       "match": "==|!=|<=|>=|<|>",
       "name": "keyword.operator.comparison.grov"
+    },
+
+    "grov-ternary-operator": {
+      "match": "[?:]",
+      "name": "keyword.operator.ternary.grov"
     },
 
     "grov-concatenation-operator": {
@@ -217,7 +245,12 @@
 
     "grov-assignment-operator": {
       "match": "(?<![=!<>])=(?!=)",
-      "name": "punctuation.separator.key-value.grov"
+      "name": "keyword.operator.assignment.grov"
+    },
+
+    "grov-bracket-access": {
+      "match": "[\\[\\]]",
+      "name": "punctuation.bracket.square.grov"
     },
 
     "grov-accessor": {
@@ -227,7 +260,93 @@
 
     "grov-variable": {
       "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
-      "name": "entity.other.attribute-name.grov"
+      "name": "variable.other.grov"
+    },
+
+    "grov-component-definition-open": {
+      "begin": "(<)(Component)(?=[\\s>])",
+      "end": "(/?>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.grov" },
+        "2": { "name": "entity.name.tag.definition.grov" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.tag.end.grov" }
+      },
+      "patterns": [
+        { "include": "#grov-component-name-attribute" },
+        { "include": "#grov-component-attribute" }
+      ]
+    },
+
+    "grov-component-definition-close": {
+      "match": "(</)(Component)(>)",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.begin.grov" },
+        "2": { "name": "entity.name.tag.definition.grov" },
+        "3": { "name": "punctuation.definition.tag.end.grov" }
+      }
+    },
+
+    "grov-component-invocation-open": {
+      "begin": "(<)(?!Component\\b)([A-Z][a-zA-Z0-9]*)(?=[\\s>])",
+      "end": "(/?>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.grov" },
+        "2": { "name": "entity.name.tag.component.grov" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.tag.end.grov" }
+      },
+      "patterns": [
+        { "include": "#grov-component-attribute" }
+      ]
+    },
+
+    "grov-component-invocation-close": {
+      "match": "(</)([A-Z][a-zA-Z0-9]*)(>)",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.begin.grov" },
+        "2": { "name": "entity.name.tag.component.grov" },
+        "3": { "name": "punctuation.definition.tag.end.grov" }
+      }
+    },
+
+    "grov-component-name-attribute": {
+      "match": "(name)(=)",
+      "captures": {
+        "1": { "name": "entity.other.attribute-name.component.grov" },
+        "2": { "name": "keyword.operator.assignment.grov" }
+      }
+    },
+
+    "grov-component-attribute": {
+      "patterns": [
+        {
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_-]*)(=)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.grov" },
+            "2": { "name": "keyword.operator.assignment.grov" }
+          }
+        },
+        { "include": "#grov-attribute-expression" },
+        { "include": "#grov-string-double" },
+        { "include": "#grov-string-single" }
+      ]
+    },
+
+    "grov-attribute-expression": {
+      "begin": "(\\{)(?![%#])",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.section.embedded.begin.attribute.grov" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.section.embedded.end.attribute.grov" }
+      },
+      "patterns": [
+        { "include": "#grov-expression" }
+      ]
     }
   }
 }
