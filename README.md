@@ -30,7 +30,7 @@
 
 **From `.vsix` file:**
 
-1. Download or build the `.vsix` (see [Building](#building) below)
+1. Build the `.vsix` (see [Building](#building) below)
 2. In VS Code, open the Command Palette and run **Extensions: Install from VSIX...**
 3. Select the `.vsix` file
 4. Reload the window
