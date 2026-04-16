@@ -10,7 +10,6 @@
     { "include": "#grov-component-definition-close" },
     { "include": "#grov-component-invocation-open" },
     { "include": "#grov-component-invocation-close" },
-    { "include": "#grov-attribute-expression" },
     { "include": "text.html.basic" }
   ],
   "repository": {
@@ -131,6 +130,7 @@
 
     "grov-expression": {
       "patterns": [
+        { "include": "#grov-object-literal" },
         { "include": "#grov-string-double" },
         { "include": "#grov-string-single" },
         { "include": "#grov-number" },
@@ -190,8 +190,30 @@
     },
 
     "grov-logical-operator": {
-      "match": "\\b(and|or|not)\\b",
-      "name": "keyword.operator.logical.grov"
+      "patterns": [
+        {
+          "match": "\\b(and|or|not)\\b",
+          "name": "keyword.operator.logical.grov"
+        },
+        {
+          "match": "&&|\\|\\||!(?!=)",
+          "name": "keyword.operator.logical.grov"
+        }
+      ]
+    },
+
+    "grov-object-literal": {
+      "begin": "\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.object.begin.grov" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.section.object.end.grov" }
+      },
+      "patterns": [
+        { "include": "#grov-expression" }
+      ]
     },
 
     "grov-filter": {
