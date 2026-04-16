@@ -17,6 +17,7 @@
 - Full HTML embedding — Grove tokens are highlighted alongside standard HTML
 - File icons for `.grov` files
 - Bracket matching and auto-closing pairs for Grove delimiters
+- Built-in Alpine.js support: directive highlighting (`x-*`, `@event`, `:prop`), hover docs, and snippets for `.grov` files — no second extension required
 
 ## Supported Editors
 
@@ -134,9 +135,13 @@ Grove is HTML-first, so most HTML editor tooling works in `.grov` files. The ext
 | Auto Rename Tag | Yes | Same as above. |
 | Extensions keyed on TextMate scope (e.g. `text.html.*`) | Yes | Grove's root scope is `text.html.grov`, so scope-prefixed matchers hit. |
 
+### Built-in Alpine.js support
+
+The extension ships with vendored Alpine.js tooling derived from [pcbowers/alpine-intellisense](https://github.com/pcbowers/alpine-intellisense) (MIT), re-scoped to target `.grov` files directly. You get directive syntax highlighting, hover docs, autocompletion, and snippets without installing a second extension. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for attribution. Also inspired by [Sperovita/alpinejs-syntax-highlight](https://github.com/Sperovita/alpinejs-syntax-highlight) (MIT).
+
 ### Extensions that hardcode `html`
 
-Some extensions (Alpine.js IntelliSense and a few linters) only run when the language ID is literally `html` and offer no `includeLanguages`-style opt-in. To use them in `.grov` files, add a workspace-level association:
+Some extensions (a few linters, legacy tooling) only run when the language ID is literally `html` and offer no `includeLanguages`-style opt-in. To use them in `.grov` files, add a workspace-level association:
 
 ```json
 // .vscode/settings.json
@@ -168,6 +173,15 @@ wispy-grove-lang-support/
 ├── scripts/             # Build scripts
 └── branding/            # Logos and assets
 ```
+
+## Credits
+
+Built-in Alpine.js support is derived from the following MIT-licensed projects. Full license text and pinned commit SHAs are recorded in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
+- [pcbowers/alpine-intellisense](https://github.com/pcbowers/alpine-intellisense) by P Christopher Bowers — injection grammar, HTML custom-data hover docs, and directive snippets (primary source, vendored).
+- [Sperovita/alpinejs-syntax-highlight](https://github.com/Sperovita/alpinejs-syntax-highlight) by Greg Ransons — reference for JS-in-attribute injection patterns (researched, not directly vendored).
+
+Thank you to both authors — this extension would not ship Alpine tooling without their prior work.
 
 ## License
 

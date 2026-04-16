@@ -1,0 +1,28 @@
+<Card x-data="{ open: false, count: 0 }">
+  <button @click="open = !open" :class="{ 'active': open }">
+    Toggle
+  </button>
+
+  <div x-show="open" x-transition>
+    <p x-text="count"></p>
+    <input type="text" x-model="count" :placeholder="'count: ' + count" />
+  </div>
+
+  {% if user %}
+    <span x-text="{user.name}">Mixed: Grove interpolation inside Alpine x-text</span>
+  {% /if %}
+
+  {% each items as item %}
+    <li :key="item.id" @click="$dispatch('select', item)">
+      {item.label}
+    </li>
+  {% /each %}
+
+  <template x-for="n in 3">
+    <p x-init="console.log($el, $refs, $store.app)"></p>
+  </template>
+
+  <div x-ref="panel" x-effect="console.log(count)" x-cloak>
+    <slot />
+  </div>
+</Card>
