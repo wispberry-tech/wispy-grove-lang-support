@@ -90,7 +90,7 @@ Sigils appear as the first character after `{%` and determine the tag type:
 | `capture` | `keyword.control.capture.grov` |
 | `asset`, `meta`, `hoist` | `keyword.control.web.grov` |
 | `verbatim` | `keyword.control.verbatim.grov` |
-| `and`, `or`, `not` | `keyword.operator.logical.grov` |
+| `and`, `or`, `not`, `&&`, `\|\|`, `!` | `keyword.operator.logical.grov` |
 | `true`, `false` | `constant.language.boolean.grov` |
 | `nil`, `null` | `constant.language.null.grov` |
 
@@ -131,6 +131,7 @@ Attribute expressions use single braces: `title={post.title}`, `elevated={isActi
 | `[`, `]` (index access) | `punctuation.bracket.square.grov` |
 | Identifiers | `variable.other.grov` |
 | Built-in functions (`range()`) | `support.function.builtin.grov` |
+| `{`, `}` (object literal `{k: v}` in expression) | `punctuation.section.object.begin/end.grov` |
 
 #### Comment Scopes
 

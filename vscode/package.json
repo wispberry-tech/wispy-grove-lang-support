@@ -46,6 +46,21 @@
           "text.html.basic": "html"
         }
       }
-    ]
+    ],
+    "configurationDefaults": {
+      "emmet.includeLanguages": {
+        "grov": "html"
+      },
+      "tailwindCSS.includeLanguages": {
+        "grov": "html"
+      },
+      "[grov]": {
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": true
+        }
+      }
+    }
   }
 }
