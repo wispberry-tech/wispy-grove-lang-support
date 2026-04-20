@@ -290,7 +290,7 @@
       "end": "(/?>)",
       "beginCaptures": {
         "1": { "name": "punctuation.definition.tag.begin.grov" },
-        "2": { "name": "entity.name.tag.definition.grov" }
+        "2": { "name": "support.class.component.definition.grov entity.name.type.component.definition.grov entity.name.tag.definition.grov" }
       },
       "endCaptures": {
         "0": { "name": "punctuation.definition.tag.end.grov" }
@@ -305,7 +305,7 @@
       "match": "(</)(Component)(>)",
       "captures": {
         "1": { "name": "punctuation.definition.tag.begin.grov" },
-        "2": { "name": "entity.name.tag.definition.grov" },
+        "2": { "name": "support.class.component.definition.grov entity.name.type.component.definition.grov entity.name.tag.definition.grov" },
         "3": { "name": "punctuation.definition.tag.end.grov" }
       }
     },
@@ -315,7 +315,7 @@
       "end": "(/?>)",
       "beginCaptures": {
         "1": { "name": "punctuation.definition.tag.begin.grov" },
-        "2": { "name": "entity.name.tag.component.grov" }
+        "2": { "name": "support.class.component.grov entity.name.type.component.grov" }
       },
       "endCaptures": {
         "0": { "name": "punctuation.definition.tag.end.grov" }
@@ -329,7 +329,7 @@
       "match": "(</)([A-Z][a-zA-Z0-9]*)(>)",
       "captures": {
         "1": { "name": "punctuation.definition.tag.begin.grov" },
-        "2": { "name": "entity.name.tag.component.grov" },
+        "2": { "name": "support.class.component.grov entity.name.type.component.grov" },
         "3": { "name": "punctuation.definition.tag.end.grov" }
       }
     },

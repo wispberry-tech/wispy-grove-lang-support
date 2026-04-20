@@ -2,8 +2,12 @@
   "name": "wispy-grove",
   "displayName": "Wispy Grove",
   "description": "Syntax highlighting for Wispy Grove templates",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "wispy",
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:grov"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/wispy-lang/wispy-grove-support"
@@ -79,6 +83,24 @@
           "other": true,
           "comments": false,
           "strings": true
+        }
+      },
+      "editor.tokenColorCustomizations": {
+        "[*Dark*]": {
+          "textMateRules": [
+            {
+              "scope": "support.class.component.grov",
+              "settings": { "foreground": "#D2A8FF" }
+            }
+          ]
+        },
+        "[*Light*]": {
+          "textMateRules": [
+            {
+              "scope": "support.class.component.grov",
+              "settings": { "foreground": "#8250DF" }
+            }
+          ]
         }
       }
     }
