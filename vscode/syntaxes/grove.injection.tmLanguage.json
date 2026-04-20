@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "scopeName": "text.html.grov.injection",
+  "injectionSelector": "L:text.html.grov string.quoted.double.html, L:text.html.grov string.quoted.single.html",
+  "patterns": [
+    { "include": "text.html.grov#grov-comment" },
+    { "include": "text.html.grov#grov-verbatim-block" },
+    { "include": "text.html.grov#grov-tag" }
+  ]
+}

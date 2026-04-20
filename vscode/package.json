@@ -50,6 +50,13 @@
         }
       },
       {
+        "scopeName": "text.html.grov.injection",
+        "path": "./syntaxes/grove.injection.tmLanguage.json",
+        "injectTo": [
+          "text.html.grov"
+        ]
+      },
+      {
         "scopeName": "wispy.alpine.injection",
         "path": "./syntaxes/alpine.injection.json",
         "injectTo": [
